@@ -32,8 +32,9 @@
     record: RecordItem = {
       tags: [], notes: '', type: '-', amount: 0
     };
-    creted(){
-      this.$store.commit('fetchRecords')
+
+    creted() {
+      this.$store.commit('fetchRecords');
     }
 
     onUpdateNotes(value: string) {
