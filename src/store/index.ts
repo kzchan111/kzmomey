@@ -9,7 +9,7 @@ Vue.use(Vuex);
 type RootState = {
   recordList: RecordItem[];
   tagList: Tag[];
-  currentTag?: undefined;
+  currentTag?: Tag;
 }
 const store = new Vuex.Store({
   state: {
