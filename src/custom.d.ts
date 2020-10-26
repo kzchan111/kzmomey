@@ -1,10 +1,16 @@
+type RootState = {
+  recordList: RecordItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+}
 type RecordItem = {
-  tags: string[];
+  tags: Tag[];
   notes: string;
   type: string;
-  amount: number;
-  createAt?: Date;
-};
+  amount: number; // 数据类型 object | string
+  createdAt?: string;  // 类 / 构造函数
+}
+
 type Tag = {
   id: string;
   name: string;
@@ -12,12 +18,11 @@ type Tag = {
 type TagListModel = {
   data: Tag[];
   fetch: () => Tag[];
-  create: (name: string) => 'success' | 'duplicated';
+  create: (name: string) => 'success' | 'duplicated'; // 联合类型
   update: (id: string, name: string) => 'success' | 'not found' | 'duplicated';
   remove: (id: string) => boolean;
   save: () => void;
 }
 
-//interface Window {
-//}
-
+interface Window {
+}
