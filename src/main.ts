@@ -21,6 +21,6 @@ new Vue({
 
 window.onload = function () {
   setTimeout(function () {
-    window.scrollTo(0,1000);
+    window.scrollTo(0,200);
   },0);
 }
