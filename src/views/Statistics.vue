@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
-    <Chart :options="x"/>
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="x"/>
+    </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}} <span>￥{{group.total}}</span></h3>
@@ -35,7 +37,11 @@
   })
   export default class Statistics extends Vue {
     tagString(tags: Tag[]) {
-      return tags.length === 0 ? '无' : tags.map(t=>t.name).join('，');
+      return tags.length === 0 ? '无' : tags.map(t => t.name).join('，');
+    }
+
+    mounted() {
+      (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
     }
 
     beautify(string: string) {
@@ -54,9 +60,18 @@
         return day.format('YYYY年M月D日');
       }
     }
-    get x(){
+
+    get x() {
       return {
+        grid: {
+          left: 0,
+          right: 0,
+        },
         xAxis: {
+          axisTick: {
+            alignWithLabel:true
+          },
+          axisLine:{lineStyle:{color:'#666'}},
           type: 'category',
           data: [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
@@ -65,9 +80,13 @@
           ]
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          show: false
         },
         series: [{
+          symbol:'circle',
+          symbolSize: 12,
+        itemStyle:{color:'#666'},
           data: [
             820, 932, 901, 934, 1290, 1330, 1320,
             820, 932, 901, 934, 1290, 1330, 1320,
@@ -76,9 +95,14 @@
           ],
           type: 'line'
         }],
-        tooltip: {show: true}
+        tooltip: {
+          show: true,
+          position:'top',
+          formatter:'{c}'
+        }
       };
     }
+
     get recordList() {
       return (this.$store.state as RootState).recordList;
     }
@@ -117,14 +141,16 @@
 </script>
 
 <style scoped lang="scss">
-  .echarts{
+  .echarts {
     max-width: 100%;
     height: 400px;
   }
-  .noResult{
+
+  .noResult {
     padding: 16px;
     text-align: center;
   }
+
   ::v-deep {
     .type-tabs-item {
       background: #C4C4C4;
@@ -164,5 +190,17 @@
     margin-right: auto;
     margin-left: 16px;
     color: #999;
+  }
+
+  .chart {
+    width: 430%;
+
+    &-wrapper {
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 </style>
